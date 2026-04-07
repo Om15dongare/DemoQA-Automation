@@ -5,26 +5,32 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat 'mvn clean compile'
+                dir('DemoQAAutomation') {
+                    bat 'mvn clean compile'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                bat 'mvn test'
+                dir('DemoQAAutomation') {
+                    bat 'mvn test'
+                }
             }
         }
 
         stage('Report') {
             steps {
-                publishHTML([
-                    allowMissing: true,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'target',
-                    reportFiles: 'index.html',
-                    reportName: 'Extent Report'
-                ])
+                dir('DemoQAAutomation') {
+                    publishHTML([
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target',
+                        reportFiles: 'ExtentReport.html',
+                        reportName: 'Extent Report'
+                    ])
+                }
             }
         }
     }
